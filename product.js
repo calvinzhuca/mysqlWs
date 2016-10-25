@@ -26,14 +26,20 @@ dbconn.connect(function(err){
 });
 
 
-var record= { firstname: 'Rahul', lastname: 'Kumar', email: 'abc@domain.com' };
 
-dbconn.query('INSERT INTO users SET ?', record, function(err,res){
+
+
+
+dbconn.query('SELECT * FROM PRODUCT',function(err, records){
   if(err) throw err;
 
-  console.log('Last record insert id:', res.insertId);
+  console.log('Data received from Db:n');
+  console.log(records);
 });
+
+
 
 dbconn.end(function(err) {
   // Function to close database connection
 });
+
