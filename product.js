@@ -1,9 +1,20 @@
 var mysql  = require('mysql');
+
+var dbHost = process.env.MYSQL_HOST,
+      dbUser = process.env.MYSQL_USER,
+      dbDatabase = process.env.MYSQL_DATABASE,
+      dbPassword = process.env.MYSQL_PASSWORD;
+
+console.log('!!!!!!!!!!!!!!!!!!!!!!dbHost ' + dbHost);
+console.log('!!!!!!!!!!!!!!!!!!!!!!dbUser ' + dbUser);
+console.log('!!!!!!!!!!!!!!!!!!!!!!dbDatabase ' + dbDatabase);
+console.log('!!!!!!!!!!!!!!!!!!!!!!dbPassword ' + dbPassword);
+
 var dbconn = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'myusr',
-  password : '123456',
-  database : 'mydb'
+  host     : dbHost,
+  user     : dbUser,
+  password : dbPassword,
+  database : dbDatabase
 });
 
 dbconn.connect(function(err){
