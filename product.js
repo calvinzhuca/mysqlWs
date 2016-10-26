@@ -14,10 +14,10 @@ var dbHost = process.env.MYSQL_HOST,
 
 
 
-	dbHost = 'localhost';
-	dbUser = 'product';
-	dbDatabase = 'product';
-	dbPassword = 'password';
+//	dbHost = 'localhost';
+//	dbUser = 'product';
+//	dbDatabase = 'product';
+//	dbPassword = 'password';
 
 console.log('!!!!!!!!!!!!!!!!!!!!!!dbHost ' + dbHost);
 console.log('!!!!!!!!!!!!!!!!!!!!!!dbUser ' + dbUser);
