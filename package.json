@@ -4,9 +4,9 @@
   "description": "Node.js with mySQL app for OpenShift 3",
   "main": "product.js",
   "dependencies": {
-    "express": "^4.13.4",
-    "mysql":"2.11.1",
-    "body-parser":"1.15.2"
+    "express": "~4.14.0",
+    "mysql": "2.11.1",
+    "body-parser": "1.15.2"
   },
   "engine": {
     "node": "*",
@@ -21,7 +21,7 @@
     "url": "http://github.com/calvinzhuca/mysqlWs.git"
   },
   "author": "Calvin Zhu",
-  "license": "CC-BY-1.0",
+  "license": "BSD",
   "bugs": {
     "url": "http://github.com/calvinzhuca/mysqlWs/issues"
   },
