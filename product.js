@@ -22,14 +22,14 @@ console.log('!!!!!!!!!!!!!!!!!!!!!!dbPassword ' + dbPassword);
 
 app.get('/', function(req, res) {
 	var result = [
-	  { status : "strange"}
+	  { status : "test worked"}
 	];
   res.json(result);
 });
 
 app.get('/version', function(req, res) {
 	var result = [
-	  { version : "33"}
+	  { version : "1"}
 	];
   res.json(result);
 });
@@ -135,25 +135,68 @@ app.post('/products', function(req, httpRes) {
 
 	dbconn.query('INSERT INTO PRODUCT SET ?', record, function(err,dbRes){
 		if(err) throw err;
-		console.log('Last record insert SKU:', dbRes.insertId);
+		console.log('Last record insert into PRODUCT table, SKU:', dbRes.insertId);
+		var sku = dbRes.insertId;
 
-		result = [
-		  { status : "SUCCESS",
-		  SKU : dbRes.insertId}
-		];
+		record = {KEYWORD: req.body.IMAGE, SKU: dbRes.insertId};
+		dbconn.query('INSERT INTO PRODUCT_KEYWORD SET ?', record, function(err,dbRes){
+			if(err) {throw err;}
+			else {
+				console.log('record insert into PRODUCT_KEYWORD table');
+				result = [
+				  { status : "SUCCESS",
+				  SKU : sku}
+				];
+				httpRes.json(result);
+			}
 
-		httpRes.json(result);
+			dbconn.end(function(err) {
+			    console.log('Database connection is end');
+			});
 
-
+		});
 	});
+
+
+
+
+});
+
+
+//delete based on sku #
+app.delete('/products/:sku', function(req, httpRes) {
+
+	var dbconn = mysql.createConnection({
+	  host     : dbHost,
+	  user     : dbUser,
+	  password : dbPassword,
+	  database : dbDatabase
+	});
+	dbconn.connect(function(err){
+	  if(err){
+	    console.log('Database connection error');
+	  }else{
+	    console.log('Database connection successful');
+	  }
+	});
+
+	dbconn.query('DELETE FROM PRODUCT_KEYWORD where SKU = ?', req.params.sku, function(err, result){
+	  if(err) throw err;
+		console.log('deleted from PRODUCT_KEYWORD ' + result.affectedRows + ' rows');
+	});
+
+	dbconn.query('DELETE FROM PRODUCT where SKU = ?', req.params.sku, function(err, result){
+	  if(err) throw err;
+		console.log('deleted from PRODUCT ' + result.affectedRows + ' rows');
+	});
+
+  	httpRes.json('deleted from both PRODUCT and PRODUCT_KEYWORD tables');
 
 	dbconn.end(function(err) {
 	    console.log('Database connection is end');
 	});
 
 });
-
-
 
 
 app.listen(process.env.PORT || 8080);
