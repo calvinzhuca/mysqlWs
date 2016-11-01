@@ -198,5 +198,94 @@ app.delete('/products/:sku', function(req, httpRes) {
 
 });
 
+//put (update) based on sku #
+app.put('/products/:sku', function(req, res) {
+	console.log('!!!!!!!!!!calling put method');
+	updateProduct(req.params.sku, req, res);
+});
+
+//patch (update) based on sku #
+app.patch('/products/:sku', function(req, res) {
+	console.log('!!!!!!!!!!!calling patch method');
+	updateProduct(req.params.sku, req, res);
+});
+
+
+//real update function works for both put and patch request
+function updateProduct(skuIn, req, httpRes) {
+
+	var dbconn = mysql.createConnection({
+	  host     : dbHost,
+	  user     : dbUser,
+	  password : dbPassword,
+	  database : dbDatabase
+	});
+	dbconn.connect(function(err){
+	  if(err){
+	    console.log('Database connection error');
+	  }else{
+	    console.log('Database connection successful');
+	  }
+	});
+
+	var sqlStr0 = 'UPDATE PRODUCT SET '; 
+	var sqlStr = ''; 
+	if (req.body.DESCRIPTION != null){
+		sqlStr = 'DESCRIPTION = \'' + req.body.DESCRIPTION + "\'";
+	}
+	if (req.body.HEIGHT != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'HEIGHT = \'' + req.body.HEIGHT + "\'";
+	}
+	if (req.body.LENGTH != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'LENGTH = \'' + req.body.LENGTH + "\'";
+	}
+	if (req.body.NAME != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'NAME = \'' + req.body.NAME + "\'";
+	}
+	if (req.body.WEIGHT != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'WEIGHT = \'' + req.body.WEIGHT + "\'";
+	}
+	if (req.body.WIDTH != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'WIDTH = \'' + req.body.WIDTH + "\'";
+	}
+	if (req.body.FEATURED != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'FEATURED = \'' + req.body.FEATURED + "\'";
+	}
+	if (req.body.AVAILABILITY != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'AVAILABILITY = \'' + req.body.AVAILABILITY + "\'";
+	}
+	if (req.body.IMAGE != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'IMAGE = \'' + req.body.IMAGE + "\'";
+	}
+	if (req.body.PRICE != null){
+		if (sqlStr !='') sqlStr = sqlStr + " , ";
+		sqlStr = sqlStr + 'PRICE = \'' + req.body.PRICE + "\'";
+	}
+	sqlStr = sqlStr0 + sqlStr + ' WHERE SKU = ?';
+    	console.log('!!!!!SQL ready to be executed: ' + sqlStr);
+
+
+	dbconn.query(sqlStr, skuIn, function(err, result){
+	  if(err) throw err;
+		console.log('update PRODUCT table' + result.affectedRows + ' rows');
+	});
+
+  	httpRes.json('Update PRODUCT table');
+
+	dbconn.end(function(err) {
+	    console.log('Database connection is end');
+	});
+
+}
+
+
 
 app.listen(process.env.PORT || 8080);
