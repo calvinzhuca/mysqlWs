@@ -27,7 +27,7 @@ app.get('/', function(req, res) {
   res.json(result);
 });
 
-app.get('/version', function(req, res) {
+app.get('/product/version', function(req, res) {
 	var result = [
 	  { version : "1"}
 	];
@@ -36,7 +36,7 @@ app.get('/version', function(req, res) {
 
 
 //get either featured products or products with keyword
-app.get('/products', function(req, httpRes) {
+app.get('/product/products', function(req, httpRes) {
 
 	var dbconn = mysql.createConnection({
 	  host     : dbHost,
@@ -79,7 +79,7 @@ app.get('/products', function(req, httpRes) {
 
 
 //get based on sku #
-app.get('/products/:sku', function(req, httpRes) {
+app.get('/product/products/:sku', function(req, httpRes) {
 
 	var dbconn = mysql.createConnection({
 	  host     : dbHost,
@@ -108,7 +108,7 @@ app.get('/products/:sku', function(req, httpRes) {
 
 
 //add product through post 
-app.post('/products', function(req, httpRes) {
+app.post('/product/products', function(req, httpRes) {
 	if(!req.body.hasOwnProperty('DESCRIPTION') || !req.body.hasOwnProperty('NAME')) {
 		httpRes.statusCode = 400;
 		return httpRes.send('Error 400: need to have valid DESCRIPTION and NAME.');
@@ -164,7 +164,7 @@ app.post('/products', function(req, httpRes) {
 
 
 //delete based on sku #
-app.delete('/products/:sku', function(req, httpRes) {
+app.delete('/product/products/:sku', function(req, httpRes) {
 
 	var dbconn = mysql.createConnection({
 	  host     : dbHost,
@@ -199,13 +199,13 @@ app.delete('/products/:sku', function(req, httpRes) {
 });
 
 //put (update) based on sku #
-app.put('/products/:sku', function(req, res) {
+app.put('/product/products/:sku', function(req, res) {
 	console.log('!!!!!!!!!!calling put method');
 	updateProduct(req.params.sku, req, res);
 });
 
 //patch (update) based on sku #
-app.patch('/products/:sku', function(req, res) {
+app.patch('/product/products/:sku', function(req, res) {
 	console.log('!!!!!!!!!!!calling patch method');
 	updateProduct(req.params.sku, req, res);
 });
