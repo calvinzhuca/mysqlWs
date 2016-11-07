@@ -60,12 +60,12 @@ app.get('/products', function(req, httpRes) {
 
 
 	if (req.query.featured != null) {
-		dbconn.query('SELECT * FROM PRODUCT where FEATURED = ?', req.query.featured, function(err, records){
+		dbconn.query('SELECT * FROM Product where FEATURED = ?', req.query.featured, function(err, records){
 		  if(err) throw err;
 		  httpRes.json(records);
 		});
 	} else if (req.query.keyword != null){
-		dbconn.query('SELECT * FROM PRODUCT where SKU in (select SKU from PRODUCT_KEYWORD where KEYWORD = ?)', req.query.keyword, function(err, records){
+		dbconn.query('SELECT * FROM Product where SKU in (select SKU from PRODUCT_KEYWORD where Keyword = ?)', req.query.keyword, function(err, records){
 		  if(err) throw err;
 		  httpRes.json(records);
 		});
@@ -95,7 +95,7 @@ app.get('/products/:sku', function(req, httpRes) {
 	  }
 	});
 
-	dbconn.query('SELECT * FROM PRODUCT where SKU = ?', req.params.sku, function(err, records){
+	dbconn.query('SELECT * FROM Product where SKU = ?', req.params.sku, function(err, records){
 	  if(err) throw err;
 	  httpRes.json(records);
 	});
@@ -133,9 +133,9 @@ app.post('/products', function(req, httpRes) {
 	var record= { DESCRIPTION: req.body.DESCRIPTION, HEIGHT: req.body.HEIGHT, LENGTH: req.body.LENGTH,  NAME: req.body.NAME, WEIGHT: req.body.WEIGHT, WIDTH: req.body.WIDTH, FEATURED: req.body.FEATURED, AVAILABILITY: req.body.AVAILABILITY, IMAGE: req.body.IMAGE, PRICE: req.body.PRICE};
 
 
-	dbconn.query('INSERT INTO PRODUCT SET ?', record, function(err,dbRes){
+	dbconn.query('INSERT INTO Product SET ?', record, function(err,dbRes){
 		if(err) throw err;
-		console.log('Last record insert into PRODUCT table, SKU:', dbRes.insertId);
+		console.log('Last record insert into Product table, SKU:', dbRes.insertId);
 		var sku = dbRes.insertId;
 
 		record = {KEYWORD: req.body.IMAGE, SKU: dbRes.insertId};
@@ -185,12 +185,12 @@ app.delete('/products/:sku', function(req, httpRes) {
 		console.log('deleted from PRODUCT_KEYWORD ' + result.affectedRows + ' rows');
 	});
 
-	dbconn.query('DELETE FROM PRODUCT where SKU = ?', req.params.sku, function(err, result){
+	dbconn.query('DELETE FROM Product where SKU = ?', req.params.sku, function(err, result){
 	  if(err) throw err;
-		console.log('deleted from PRODUCT ' + result.affectedRows + ' rows');
+		console.log('deleted from Product ' + result.affectedRows + ' rows');
 	});
 
-  	httpRes.json('deleted from both PRODUCT and PRODUCT_KEYWORD tables');
+  	httpRes.json('deleted from both Product and PRODUCT_KEYWORD tables');
 
 	dbconn.end(function(err) {
 	    console.log('Database connection is end');
@@ -228,7 +228,7 @@ function updateProduct(skuIn, req, httpRes) {
 	  }
 	});
 
-	var sqlStr0 = 'UPDATE PRODUCT SET '; 
+	var sqlStr0 = 'UPDATE Product SET '; 
 	var sqlStr = ''; 
 	if (req.body.DESCRIPTION != null){
 		sqlStr = 'DESCRIPTION = \'' + req.body.DESCRIPTION + "\'";
@@ -275,10 +275,10 @@ function updateProduct(skuIn, req, httpRes) {
 
 	dbconn.query(sqlStr, skuIn, function(err, result){
 	  if(err) throw err;
-		console.log('update PRODUCT table' + result.affectedRows + ' rows');
+		console.log('update Product table' + result.affectedRows + ' rows');
 	});
 
-  	httpRes.json('Update PRODUCT table');
+  	httpRes.json('Update Product table');
 
 	dbconn.end(function(err) {
 	    console.log('Database connection is end');
