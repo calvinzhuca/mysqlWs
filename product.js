@@ -58,10 +58,13 @@ app.get('/product/products', function(req, httpRes) {
 		return httpRes.send('All products cannot be returned, need to provide a search condition');
 	}
 
-
+	console.log('!!!!!!!!!!!here1');
 	if (req.query.featured != null) {
+		console.log('!!!!!!!!!!!here2' + req.query.featured);
+
 		dbconn.query('SELECT * FROM Product where FEATURED = ?', req.query.featured, function(err, records){
 		  if(err) throw err;
+		console.log('!!!!!!!!!!!here3' + records);
 		  httpRes.json(records);
 		});
 	} else if (req.query.keyword != null){
