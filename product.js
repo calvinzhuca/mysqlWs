@@ -69,7 +69,7 @@ app.get('/product/products', function(req, httpRes) {
 		  httpRes.json(records);
 		});
 	} else if (req.query.keyword != null){
-		dbconn.query('SELECT * FROM Product where SKU in (select SKU from PRODUCT_KEYWORD where Keyword = ?)', req.query.keyword, function(err, records){
+		dbconn.query('select sku, availability, description, featured=1 as featured, height, image, length, name, price, weight, width from Product where SKU in (select SKU from PRODUCT_KEYWORD where Keyword = ?)', req.query.keyword, function(err, records){
 		  if(err) throw err;
 		  httpRes.json(records);
 		});
@@ -101,7 +101,7 @@ app.get('/product/products/:sku', function(req, httpRes) {
 	  }
 	});
 
-	dbconn.query('SELECT * FROM Product where SKU = ?', req.params.sku, function(err, records){
+	dbconn.query('select sku, availability, description, featured=1 as featured, height, image, length, name, price, weight, width from Product where SKU = ?', req.params.sku, function(err, records){
 	  if(err) throw err;
 	  httpRes.json(records);
 	});
