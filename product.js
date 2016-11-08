@@ -62,9 +62,9 @@ app.get('/product/products', function(req, httpRes) {
 	if (req.query.featured != null) {
 		console.log('!!!!!!!!!!!here2' + req.query.featured);
 
-		dbconn.query('SELECT * FROM Product where FEATURED = ?', req.query.featured, function(err, records){
+		dbconn.query('SELECT * FROM Product where featured=true', function(err, records){
 		  if(err) throw err;
-		console.log('!!!!!!!!!!!here4' + httpRes.json(records));
+		console.log('!!!!!!!!!!!here5' + records);
 		  httpRes.json(records);
 		});
 	} else if (req.query.keyword != null){
