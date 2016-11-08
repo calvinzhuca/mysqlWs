@@ -64,7 +64,7 @@ app.get('/product/products', function(req, httpRes) {
 
 		dbconn.query('SELECT * FROM Product where FEATURED = ?', req.query.featured, function(err, records){
 		  if(err) throw err;
-		console.log('!!!!!!!!!!!here3' + records);
+		console.log('!!!!!!!!!!!here4' + httpRes.json(records));
 		  httpRes.json(records);
 		});
 	} else if (req.query.keyword != null){
@@ -77,6 +77,8 @@ app.get('/product/products', function(req, httpRes) {
 	dbconn.end(function(err) {
 	    console.log('Database connection is end');
 	});
+
+
 
 });
 
