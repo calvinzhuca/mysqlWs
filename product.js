@@ -98,9 +98,9 @@ app.get('/product/products/:sku', function(req, httpRes) {
 	  }
 	});
 
-	console.log('!!!!!!!!!!!here3');
+	console.log('!!!!!!!!!!!here2');
 	dbconn.query('select sku, availability, description, featured=1 as featured, height, image, length, name, price, weight, width from Product where SKU = ? ', req.params.sku, function(err, records){
-		console.log('!!!!!!!!!!!here4' + result[0]);
+		console.log('!!!!!!!!!!!here3' + records);
 	  if(err) throw err;
 	  httpRes.json(records);
 	});
