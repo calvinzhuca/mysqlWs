@@ -98,13 +98,13 @@ app.get('/product/products/:sku', function(req, httpRes) {
 	  }
 	});
 
-	console.log('!!!!!!!!!!!here22');
+	console.log('!!!!!!!!!!!here222');
 	dbconn.query('select sku, availability, description, featured=1 as featured, height, image, length, name, price, weight, width from Product where SKU = ? ', req.params.sku, function(err, records){
-		console.log('!!!!!!!!!!!here3' + records[0]);
+		console.log('!!!!!!!!!!!here33' + records[0]);
 	  if(err) throw err;
-	console.log('!!!!!!!!!!!here3');
-	  httpRes.json(records);
-	console.log('!!!!!!!!!!!here4');
+	console.log('!!!!!!!!!!!here33');
+	  httpRes.json(records[0]);
+	console.log('!!!!!!!!!!!here44');
 	});
 
 	dbconn.end(function(err) {
