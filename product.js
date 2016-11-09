@@ -58,14 +58,11 @@ app.get('/product/products', function(req, httpRes) {
 		return httpRes.send('All products cannot be returned, need to provide a search condition');
 	}
 
-	console.log('!!!!!!!!!!!here1');
 	if (req.query.featured != null) {
-		console.log('!!!!!!!!!!!here2' + req.query.featured);
 
 		dbconn.query('select sku, availability, description, featured=1 as featured, height, image, length, name, price, weight, width from Product where featured=true', function(err, records){
 //		dbconn.query('SELECT * FROM Product where featured=true', function(err, records){
 		  if(err) throw err;
-		console.log('!!!!!!!!!!!here5' + records);
 		  httpRes.json(records);
 		});
 	} else if (req.query.keyword != null){
@@ -101,7 +98,9 @@ app.get('/product/products/:sku', function(req, httpRes) {
 	  }
 	});
 
+	console.log('!!!!!!!!!!!here1');
 	dbconn.query('select sku, availability, description, featured=1 as featured, height, image, length, name, price, weight, width from Product where SKU = ?', req.params.sku, function(err, records){
+		console.log('!!!!!!!!!!!here2' + records);
 	  if(err) throw err;
 	  httpRes.json(records);
 	});
