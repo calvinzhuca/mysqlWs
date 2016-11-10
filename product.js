@@ -175,6 +175,7 @@ app.post('/product/reduce', function(req, httpRes) {
 	var array = req.body.length;
 	console.log('!!!!!!!!!!!!!reduce array length: ' + req.body.length);
 
+
 	var dbconn = mysql.createConnection({
 	  host     : dbHost,
 	  user     : dbUser,
@@ -182,11 +183,14 @@ app.post('/product/reduce', function(req, httpRes) {
 	  database : dbDatabase
 	});
 
+
+	var sendReply = false;
 	for (var i = 0; i < req.body.length; i++) {
 		if(!req.body[i].hasOwnProperty('sku') || !req.body[i].hasOwnProperty('quantity')) {
 			httpRes.statusCode = 400;
 			return httpRes.send('Error 400: need to have valid sku and quantity.');
 		}
+
 
 		var tmpSku = req.body[i]['sku'];
 		var tmpQuantity = req.body[i]['quantity'];
@@ -195,27 +199,33 @@ app.post('/product/reduce', function(req, httpRes) {
 		var sqlStr = 'update Product set availability = availability - ' + tmpQuantity + ' where sku = ' + tmpSku + ' and availability - ' + tmpQuantity + ' > 0'; 
 
 		dbconn.query(sqlStr, function(err, result){
-			if(err) throw err;
+			if(err)  { 
+				console.log('!!!!!!!!!!err ' + err);
+				throw err;
+
+			}
 		  	if (result.affectedRows > 0) {
 				console.log('reduced from Product ' + result.affectedRows + ' rows');
 		  	} else {
-				console.log('Insufficient availability for ' + tmpSku);
-				httpRes.statusCode = 400;
-				return httpRes.send('Insufficient availability for ' + tmpSku);
+				var result = [
+				  { message : 'Insufficient availability for ' + tmpSku,
+				  details : null}
+				];
+				if (sendReply == false) {
+					httpRes.json(result);
+					sendReply = true;
+				}
+
 		  	}
-
-			dbconn.end(function(err) {
-			    console.log('Database connection is end');
-			});
-
-
 		});
-
-
 
 	}
 
+	dbconn.end(function(err) {
+	    console.log('Database connection is end');
+	});
 
+	return httpRes.send('');;
 
 
 });
